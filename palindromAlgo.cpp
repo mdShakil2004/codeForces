@@ -9,6 +9,13 @@ static const uint64_t BASE = 91138233;
 int n, q;
 string s;
 
+
+
+
+
+
+
+
 /* ---------------- Manacher ---------------- */
 int d1[MAXN], d2[MAXN];
 
