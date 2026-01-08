@@ -10,13 +10,18 @@ int main() {
     
     while (t--) {
         int a, b;
+        cout<<"t-"<<t<<"..\n";
         cin >> a >> b;
+
         
         if (a == b) {
             cout << 0 << "\n";
-        } else if (a % b == 0 || b % a == 0) {
+        } 
+        
+        else if (a % b == 0 || b % a == 0) {
             cout << 1 << "\n";
-        } else {
+        }
+         else {
             cout << 2 << "\n";
         }
     }
