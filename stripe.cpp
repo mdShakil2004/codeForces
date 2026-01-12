@@ -11,6 +11,9 @@ int main(){
     vector<long long> arr(n);
     long long total_sum = 0;
     
+
+
+
     for(int i = 0; i < n; i++){
         cin >> arr[i];
         total_sum += arr[i];
