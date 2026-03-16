@@ -1,2 +1,2 @@
-codeforce problem and their solutions
+codeforce problem and their solutions.
  
