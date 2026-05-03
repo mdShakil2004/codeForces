@@ -1,0 +1,21 @@
+import java.util.*;
+
+class Solution {
+    ArrayList<Integer> sortBySetBitCount(int[] arr) {
+        
+        Integer[] temp = Arrays.stream(arr).boxed().toArray(Integer[]::new);
+
+        Arrays.sort(temp, (a, b) -> {
+            int countA = Integer.bitCount(a);
+            int countB = Integer.bitCount(b);
+            return countB - countA; // descending
+        });
+
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int num : temp) {
+            result.add(num);
+        }
+
+        return result;
+    }
+}
