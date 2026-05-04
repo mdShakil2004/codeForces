@@ -1,0 +1,14 @@
+// day
+  class Solution {
+    public boolean isBinaryPalindrome(int n) {
+        int original = n;
+        int reversed = 0;
+
+        while (n > 0) {
+            reversed = (reversed << 1) | (n & 1); // add last bit
+            n = n >> 1; // shift right
+        }
+
+        return original == reversed;
+    }
+}
