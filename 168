@@ -1,0 +1,31 @@
+class Solution {
+    public int countMinOperations(int arr[]) {
+        int operations = 0;
+
+        while (true) {
+            boolean allZero = true;
+            boolean allEven = true;
+
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i] != 0)
+                    allZero = false;
+
+                if ((arr[i] & 1) == 1) {
+                    arr[i]--;
+                    operations++;
+                    allEven = false;
+                }
+            }
+
+            if (allZero)
+                return operations;
+
+            if (allEven) {
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] /= 2;
+                }
+                operations++;
+            }
+        }
+    }
+}
