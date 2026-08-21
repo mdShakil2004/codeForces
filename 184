@@ -1,0 +1,41 @@
+class Solution {
+    int transform(String s1, String s2) {
+        int n = s1.length();
+
+        if (n != s2.length()) {
+            return -1;
+        }
+
+        // Check that both strings contain the same characters
+        int[] freq = new int[256];
+
+        for (char c : s1.toCharArray()) {
+            freq[c]++;
+        }
+
+        for (char c : s2.toCharArray()) {
+            freq[c]--;
+        }
+
+        for (int x : freq) {
+            if (x != 0) {
+                return -1;
+            }
+        }
+
+        // Find the longest suffix of s2
+        // that is a subsequence of s1.
+        int i = n - 1; // s2
+        int j = n - 1; // s1
+
+        while (i >= 0 && j >= 0) {
+            if (s2.charAt(i) == s1.charAt(j)) {
+                i--;
+            }
+            j--;
+        }
+
+        // s2[0...i] characters need to be moved
+        return i + 1;
+    }
+}
