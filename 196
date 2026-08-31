@@ -1,0 +1,23 @@
+class Solution {
+    public int minCost(int n, int i, int d, int c) {
+        long[] dp = new long[n + 1];
+
+        dp[0] = 0;
+
+        for (int x = 1; x <= n; x++) {
+            // Insert one character
+            dp[x] = dp[x - 1] + i;
+
+            if (x % 2 == 0) {
+                // Copy-paste from x/2 to x
+                dp[x] = Math.min(dp[x], dp[x / 2] + c);
+            } else {
+                // Reach x+1 by copy-paste, then delete one character
+                int half = (x + 1) / 2;
+                dp[x] = Math.min(dp[x], dp[half] + c + d);
+            }
+        }
+
+        return (int) dp[n];
+    }
+}
