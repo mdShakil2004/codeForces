@@ -1,0 +1,42 @@
+class Solution {
+    static final long MOD = 1_000_000_007L;
+
+    public int palindromicStrings(int n, int k) {
+        long ans = 0;
+
+        // factorial/permutation values:
+        // perm[i] = k * (k-1) * ... * (k-i+1)
+        long[] perm = new long[k + 1];
+        perm[0] = 1;
+
+        for (int i = 1; i <= k; i++) {
+            perm[i] = perm[i - 1] * (k - i + 1) % MOD;
+        }
+
+        // Even length: L = 2*m
+        // Number = P(k, m)
+        for (int m = 1; 2 * m <= n; m++) {
+            ans = (ans + perm[m]) % MOD;
+        }
+
+        // Odd length: L = 2*m + 1
+        // Choose center character in k ways, then arrange m
+        // distinct characters from the remaining k-1 characters.
+        for (int m = 0; 2 * m + 1 <= n; m++) {
+            long ways = k * permFrom(k - 1, m) % MOD;
+            ans = (ans + ways) % MOD;
+        }
+
+        return (int) ans;
+    }
+
+    private long permFrom(int k, int m) {
+        long res = 1;
+
+        for (int i = 0; i < m; i++) {
+            res = res * (k - i) % MOD;
+        }
+
+        return res;
+    }
+}
