@@ -1,0 +1,35 @@
+```java
+class Solution {
+    public int solve(int n, String s) {
+        boolean[] seen = new boolean[26];
+        boolean[] using = new boolean[26];
+
+        int occupied = 0;
+        int rejected = 0;
+
+        for (char c : s.toCharArray()) {
+            int idx = c - 'A';
+
+            if (!seen[idx]) {
+                // First occurrence: arrival
+                seen[idx] = true;
+
+                if (occupied < n) {
+                    using[idx] = true;
+                    occupied++;
+                } else {
+                    rejected++;
+                }
+            } else {
+                // Second occurrence: departure
+                if (using[idx]) {
+                    occupied--;
+                    using[idx] = false;
+                }
+            }
+        }
+
+        return rejected;
+    }
+}
+```
