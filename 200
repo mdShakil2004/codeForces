@@ -1,0 +1,25 @@
+class Solution {
+    public int maxFruits(ArrayList<Integer> arr, int m) {
+        int n = arr.size();
+
+        long windowSum = 0;
+        long maxSum = 0;
+
+        // First window
+        for (int i = 0; i < m; i++) {
+            windowSum += arr.get(i);
+        }
+
+        maxSum = windowSum;
+
+        // Slide over the circular array
+        for (int i = m; i < n + m - 1; i++) {
+            windowSum -= arr.get((i - m) % n);
+            windowSum += arr.get(i % n);
+
+            maxSum = Math.max(maxSum, windowSum);
+        }
+
+        return (int) maxSum;
+    }
+}
