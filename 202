@@ -1,0 +1,66 @@
+class Solution {
+    public int minCount(int[] arr) {
+        int n = arr.length;
+
+        // Values are 1..100.
+        // 0  = no element yet in increasing subsequence
+        // 101 = no element yet in decreasing subsequence
+        int[][] dp = new int[102][102];
+
+        for (int i = 0; i < 102; i++) {
+            for (int j = 0; j < 102; j++) {
+                dp[i][j] = -1;
+            }
+        }
+
+        dp[0][101] = 0;
+
+        for (int x : arr) {
+            int[][] next = new int[102][102];
+
+            for (int i = 0; i < 102; i++) {
+                for (int j = 0; j < 102; j++) {
+                    next[i][j] = -1;
+                }
+            }
+
+            for (int inc = 0; inc < 102; inc++) {
+                for (int dec = 0; dec < 102; dec++) {
+
+                    if (dp[inc][dec] == -1) {
+                        continue;
+                    }
+
+                    int used = dp[inc][dec];
+
+                    // Option 1: Don't use x
+                    next[inc][dec] = Math.max(next[inc][dec], used);
+
+                    // Option 2: Put x in increasing subsequence
+                    if (x > inc) {
+                        next[x][dec] =
+                            Math.max(next[x][dec], used + 1);
+                    }
+
+                    // Option 3: Put x in decreasing subsequence
+                    if (x < dec) {
+                        next[inc][x] =
+                            Math.max(next[inc][x], used + 1);
+                    }
+                }
+            }
+
+            dp = next;
+        }
+
+        int maxUsed = 0;
+
+        for (int inc = 0; inc < 102; inc++) {
+            for (int dec = 0; dec < 102; dec++) {
+                maxUsed = Math.max(maxUsed, dp[inc][dec]);
+            }
+        }
+
+        return n - maxUsed;
+    }
+}
