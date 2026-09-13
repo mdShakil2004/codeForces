@@ -1,0 +1,49 @@
+class Solution {
+
+    private int[] bfs(ArrayList<ArrayList<Integer>> adj, int start) {
+        int n = adj.size();
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, -1);
+
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        dist[start] = 0;
+
+        int farthest = start;
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+
+            for (int x : adj.get(u)) {
+                int v = x - 1;  // houses are 1-based
+
+                if (dist[v] == -1) {
+                    dist[v] = dist[u] + 1;
+                    q.offer(v);
+
+                    if (dist[v] > dist[farthest]) {
+                        farthest = v;
+                    }
+                }
+            }
+        }
+
+        return new int[]{farthest, dist[farthest]};
+    }
+
+    public int partyHouse(ArrayList<ArrayList<Integer>> adj) {
+        int n = adj.size();
+
+        // BFS 1: find one endpoint of diameter
+        int[] first = bfs(adj, 0);
+        int A = first[0];
+
+        // BFS 2: find diameter
+        int[] second = bfs(adj, A);
+        int diameter = second[1];
+
+        // Center radius = ceil(diameter / 2)
+        return (diameter + 1) / 2;
+    }
+}
