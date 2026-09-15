@@ -1,0 +1,74 @@
+class Solution {
+    int shortestPath(int[][] mat) {
+        int n = mat.length;
+        int m = mat[0].length;
+
+        // unsafe[i][j] = true if cell is landmine
+        // or adjacent to a landmine
+        boolean[][] unsafe = new boolean[n][m];
+
+        int[] dr = {-1, 1, 0, 0};
+        int[] dc = {0, 0, -1, 1};
+
+        // Mark landmines and their adjacent cells as unsafe
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == 0) {
+                    unsafe[i][j] = true;
+
+                    for (int k = 0; k < 4; k++) {
+                        int nr = i + dr[k];
+                        int nc = j + dc[k];
+
+                        if (nr >= 0 && nr < n && nc >= 0 && nc < m) {
+                            unsafe[nr][nc] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // BFS
+        boolean[][] visited = new boolean[n][m];
+
+        // Queue stores: row, column, distance
+        int[][] queue = new int[n * m][3];
+        int front = 0, rear = 0;
+
+        // Start from every safe cell in the first column
+        for (int i = 0; i < n; i++) {
+            if (!unsafe[i][0]) {
+                queue[rear++] = new int[]{i, 0, 1};
+                visited[i][0] = true;
+            }
+        }
+
+        while (front < rear) {
+            int r = queue[front][0];
+            int c = queue[front][1];
+            int dist = queue[front][2];
+            front++;
+
+            // Reached the last column
+            if (c == m - 1) {
+                return dist;
+            }
+
+            for (int k = 0; k < 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+
+                if (nr >= 0 && nr < n &&
+                    nc >= 0 && nc < m &&
+                    !unsafe[nr][nc] &&
+                    !visited[nr][nc]) {
+
+                    visited[nr][nc] = true;
+                    queue[rear++] = new int[]{nr, nc, dist + 1};
+                }
+            }
+        }
+
+        return -1;
+    }
+}
