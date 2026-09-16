@@ -1,0 +1,36 @@
+class Solution {
+    public int getCount(Node root, int k) {
+        if (root == null) return 0;
+
+        // Since k <= 10^4, leaf levels cannot be useful beyond k.
+        int[] freq = new int[k + 1];
+
+        collectLeaves(root, 1, k, freq);
+
+        int count = 0;
+
+        // Take cheapest leaf levels first
+        for (int level = 1; level <= k; level++) {
+            while (freq[level] > 0 && k >= level) {
+                k -= level;
+                count++;
+                freq[level]--;
+            }
+        }
+
+        return count;
+    }
+
+    private void collectLeaves(Node node, int level, int k, int[] freq) {
+        if (node == null || level > k) return;
+
+        // Leaf node
+        if (node.left == null && node.right == null) {
+            freq[level]++;
+            return;
+        }
+
+        collectLeaves(node.left, level + 1, k, freq);
+        collectLeaves(node.right, level + 1, k, freq);
+    }
+}
