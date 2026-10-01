@@ -1,0 +1,63 @@
+class Solution {
+    public int minTime(int[] duration, int[][] dependencies) {
+        int n = duration.length;
+
+        // Adjacency list
+        ArrayList<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        // indegree[v] = number of dependencies of v
+        int[] indegree = new int[n];
+
+        for (int[] edge : dependencies) {
+            int u = edge[0];
+            int v = edge[1];
+
+            graph[u].add(v);
+            indegree[v]++;
+        }
+
+        // dp[i] = earliest completion time of module i
+        int[] dp = new int[n];
+
+        // Modules with no dependencies can start immediately
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                dp[i] = duration[i];
+                queue.offer(i);
+            }
+        }
+
+        int processed = 0;
+        int answer = 0;
+
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            processed++;
+
+            answer = Math.max(answer, dp[u]);
+
+            for (int v : graph[u]) {
+                // u must finish before v can start
+                dp[v] = Math.max(dp[v], dp[u] + duration[v]);
+
+                indegree[v]--;
+
+                if (indegree[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+
+        // Not all modules were processed => cycle exists
+        if (processed != n) {
+            return -1;
+        }
+
+        return answer;
+    }
+}
